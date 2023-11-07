@@ -38,6 +38,7 @@ def create_bokeh_html(vectors, labels, out_file = "tsne_plot.html"):
 
 
     # Add hover tool
+    # This is not perfect. method will cut off messages that are way longer than expected
     hover = HoverTool(tooltips=
         """
         <b>Comment</b>: @desc0
@@ -47,9 +48,6 @@ def create_bokeh_html(vectors, labels, out_file = "tsne_plot.html"):
         @desc2
         """
     )
-    # hover = HoverTool(tooltips=[("Label", "@desc")])
-    # hover = HoverTool(tooltips=[("Comment", "@desc{safe}")], point_policy='follow_mouse')
-    # hover = HoverTool(tooltips=[("Label", "@desc{safe}")], width=300)
     p.add_tools(hover)
 
     # Save the plot as an HTML file
