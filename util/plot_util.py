@@ -19,13 +19,14 @@ def create_bokeh_html(vectors, labels, out_file = "tsne_plot.html"):
     dbscan = DBSCAN(eps=1.8, min_samples=3)
     cluster_labels = dbscan.fit_predict(vectors_2d)
 
-    
 
     # Prepare data for plotting
     source = ColumnDataSource(data=dict(
         x=vectors_2d[:, 0],
         y=vectors_2d[:, 1],
-        desc=labels,
+        desc0 =[lab[0] for lab in labels],
+        desc1 =[lab[1] if len(lab)>1 else "" for lab in labels],
+        desc2 =[lab[2] if len(lab)>2 else "" for lab in labels],
         colors=[colors[i%len(colors)] for i in cluster_labels]
     ))
 
@@ -37,7 +38,18 @@ def create_bokeh_html(vectors, labels, out_file = "tsne_plot.html"):
 
 
     # Add hover tool
-    hover = HoverTool(tooltips=[("Label", "@desc")])
+    hover = HoverTool(tooltips=
+        """
+        <b>Comment</b>: @desc0
+        <br>
+        @desc1
+        <br>
+        @desc2
+        """
+    )
+    # hover = HoverTool(tooltips=[("Label", "@desc")])
+    # hover = HoverTool(tooltips=[("Comment", "@desc{safe}")], point_policy='follow_mouse')
+    # hover = HoverTool(tooltips=[("Label", "@desc{safe}")], width=300)
     p.add_tools(hover)
 
     # Save the plot as an HTML file

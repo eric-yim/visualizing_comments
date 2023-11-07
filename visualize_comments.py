@@ -2,6 +2,7 @@ import argparse
 from util.tt_util import find_all_tt_comments
 from util.embed_util import Embedder
 from util.plot_util import create_bokeh_html
+from util.text_util import wrap_labels
 import os, json, glob
 import numpy as np
 def argparse_args():
@@ -51,6 +52,7 @@ def create_plot(args):
         if 'embedding' in tmp_dict and 'comment_text' in tmp_dict:
             vectors.append(tmp_dict['embedding'])
             labels.append(tmp_dict['comment_text'])
+    labels = wrap_labels(labels)
     vectors = np.array(vectors)
     print(f"Num Points: {len(vectors)}")
     create_bokeh_html(vectors, labels, args.out_file)
